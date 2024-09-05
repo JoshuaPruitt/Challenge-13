@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter Tight", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -100,12 +100,9 @@ tbody tr:nth-child(odd) {
   padding: 1em 2em;
 }
 
-.nav-item {
+.nav-link {
   padding: 0 0.5rem;
   list-style: none;
-}
-
-.nav-link {
   color: #fff;
   text-decoration: none;
 }
