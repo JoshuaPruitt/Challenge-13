@@ -1,3 +1,6 @@
+import testData from '../api/test.json';
+import type Candidate from '../interfaces/Candidate.interface';
+
 const searchGithub = async () => {
   try {
     const start = Math.floor(Math.random() * 100000000) + 1;
@@ -15,10 +18,10 @@ const searchGithub = async () => {
     if (!response.ok) {
       throw new Error('invalid API response, check the network tab');
     }
-    // console.log('Data:', data);
+    console.log('Data:', data);
     return data;
   } catch (err) {
-    // console.log('an error occurred', err);
+    console.log('an error occurred', err);
     return [];
   }
 };
@@ -41,4 +44,13 @@ const searchGithubUser = async (username: string) => {
   }
 };
 
-export { searchGithub, searchGithubUser };
+//used to test the upcoming functions
+const grabUsersJson = (): Promise<Candidate[]> => {
+  return new Promise((resolve, _reject) => {
+    setTimeout(() => {
+      resolve(testData);
+    }, 1000);
+  });
+}
+
+export { searchGithub, searchGithubUser, grabUsersJson };
