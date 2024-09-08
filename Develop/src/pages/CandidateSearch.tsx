@@ -1,8 +1,10 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { searchGithub, searchGithubUser, grabUsersJson } from '../api/API';
 import type Candidate from '../interfaces/Candidate.interface';
+import UserCard from '../components/userCard';
 
 const acceptedUsers: [] = []
+const i: number = 0
 
 const CandidateSearch = () => {
   const [users, updateUser] = useState<Candidate[] | []>([]);
@@ -20,33 +22,38 @@ const CandidateSearch = () => {
     }, []);
   
 
-  const acceptUser = () => {
+  const acceptUser = (id: number) => {
     //send the current user to the accepted array and set the next user
+    const updatedUsers = users.map((user: Candidate) => {
+      if (user.id === id) {
+        alert(
+          `User accepted`
+        )
+
+        return {...user};
+      }
+      return user
+    });
+    updateUser(updatedUsers);
   }
 
   return (
-    <div>
+    <div className='mainPage'>
       
       <header>
-        <h1>CandidateSearch</h1>
+        <h1>Candidate Search</h1>
       </header>
 
       <main>
-        
-        <div>
-          <img></img>
-        </div>
-
-        <h2>Name</h2>
-        <p>Location</p>
-        <label>Email:<a>placeholder@mail.com</a></label>
-        <p>Company: Placeholder</p>
-        <p>Bio: Placeholder</p>
-
-        <div>
-          <button></button>
-        </div>
-        
+        {users.map((user) => (
+          <>
+            <UserCard 
+            key={user.id}
+            acceptUser={acceptUser}
+            {...user}
+            />
+          </>
+        ))}
       </main>
       
     </div>

@@ -90,10 +90,6 @@ tr {
   color: white;
 }
 
-td {
-  
-}
-
 tbody tr:nth-child(odd) {
   background-color: #333333;
 }
@@ -118,4 +114,32 @@ tbody tr:nth-child(odd) {
 .table {
   width: 80vw;
   table-layout: fixed;
+}
+
+.userCard {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  background-color: grey;
+  border: black solid 5px;
+  border-radius: 35px;
+
+  width: 30rem;
+}
+
+.imgContainer{
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userInfo {
+  padding: 10px;
+}
+
+.userButtons {
+  margin: 20px;
+  display: flex;
+  justify-content: center; 
 }

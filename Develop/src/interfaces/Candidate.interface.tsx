@@ -9,6 +9,6 @@
     company: string;
     bio: string;
     htmlUrl: string;
-    addUser?: (id: number) => void;
+    acceptUser?: (id: number) => void;
     declineUser?: (id: number) => void;
 };
