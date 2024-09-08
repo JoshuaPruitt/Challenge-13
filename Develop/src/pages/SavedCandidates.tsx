@@ -1,8 +1,31 @@
+import { useState, useEffect} from "react";
+import { grabUsersJson } from "../api/API";
 import type Candidate from "../interfaces/Candidate.interface";
-import CandidateSearch from "./CandidateSearch";
+import UserTable from "../components/userTable";
 
 const SavedCandidates = () => {
+  const [users, updateUser] = useState<Candidate[] | []>([]);
 
+  useEffect(() => {
+    grabUsersJson().then((userData) => {
+      updateUser(userData);
+    });
+  }, []);
+
+  const declineUser = (id: number) => {
+    //send the current user to the accepted array and set the next user
+    const updatedUsers = users.map((user: Candidate) => {
+      if (user.id === id) {
+        alert(
+          `User accepted`
+        )
+
+        return {...user};
+      }
+      return user
+    });
+    updateUser(updatedUsers);
+  }
 
   return (
     <>
@@ -23,15 +46,15 @@ const SavedCandidates = () => {
           </thead>
 
           <tbody>
-              <tr>
-                <td><img></img></td>
-                <td><h3>Joshua</h3></td>
-                <td><p>Awesomplace, Japan</p></td>
-                <td><a>joshua@email.com</a></td>
-                <td><p>Best Company</p></td>
-                <td><p>I like video games and ice cream!</p></td>
-                <td><button>Reject</button></td>
-              </tr>
+             {users.map((user) => (
+              <>
+                <UserTable 
+                key={user.id}
+                declineUser={declineUser}
+                {...user}
+                />
+              </>
+             ))} 
           </tbody>
         </table>
       </main>

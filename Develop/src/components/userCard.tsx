@@ -11,9 +11,10 @@ const UserCard = (props: Candidate) => {
                 </div>
 
                 <div className="userInfo">
+                    <h2>{props.username}</h2>
                     <h2>{props.name}</h2>
                     <p>{props.location}</p>
-                    <label>Email:<a>{props.email}</a></label>
+                    <label>Email: <a>{props.email}</a></label>
                     <p>Company: {props.company}</p>
                     <p>Bio: {props.bio}</p>
                 </div>
@@ -31,5 +32,7 @@ const UserCard = (props: Candidate) => {
         </>
     )
 }
+
+
 
 export default UserCard;

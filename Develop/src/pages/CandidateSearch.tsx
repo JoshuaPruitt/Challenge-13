@@ -1,10 +1,8 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect} from 'react';
 import { searchGithub, searchGithubUser, grabUsersJson } from '../api/API';
 import type Candidate from '../interfaces/Candidate.interface';
 import UserCard from '../components/userCard';
 
-const acceptedUsers: [] = []
-const i: number = 0
 
 const CandidateSearch = () => {
   const [users, updateUser] = useState<Candidate[] | []>([]);
