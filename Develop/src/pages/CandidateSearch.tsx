@@ -15,17 +15,22 @@ const CandidateSearch = () => {
   const [users, updateUser] = useState<Candidate[]>([]);
 
   useEffect(() => {
+    //first search through the github data. This returns back an array of users with incomplete information
     searchGithub().then( async (userData) => {
-      console.log("User Data:", userData);
 
+      //Map out the data from the github search so that each user can have informaition added to them
       const detailedUserPromises = userData.map((user: Candidate) => 
+        //use the login provided by each user to grab additional information 
         searchGithubUser(user.login).then((userDetails) => ({
+          //spread out the original user data, then spread out the new user data
           ...user,
           ...userDetails
         }))
       );
 
+      //Promise all takes all the individual promises from detailedUserPromises and removes all promise information. Returning back just the objects
       const detailedUsers = await Promise.all(detailedUserPromises);
+      //We then send the parsed information to the updateUser function to have the page be updated
       updateUser(detailedUsers);
     });
   }, []);
@@ -46,7 +51,7 @@ const CandidateSearch = () => {
       //set the local storage with the updated information
       localStorage.setItem('acceptedUsers', JSON.stringify(updatedAcceptedUsers))
 
-      //remove the user from the page.
+      //remove the user from the page
       const updatedUsers = users.filter((user: Candidate) => user.id !== id);
       alert(
         `User ${acceptUser.name} has been accepted!`
