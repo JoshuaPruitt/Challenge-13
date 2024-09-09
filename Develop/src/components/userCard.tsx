@@ -7,11 +7,11 @@ const UserCard = (props: Candidate) => {
         <>
             <div className="userCard">
                 <div className="imgContainer">
-                <img src={props.image} width='200' height='200'></img>
+                <img src={props.avatar_url} width='200' height='200'></img>
                 </div>
 
                 <div className="userInfo">
-                    <h2>{props.username}</h2>
+                    <h2>{props.login}</h2>
                     <h2>{props.name}</h2>
                     <p>{props.location}</p>
                     <label>Email: <a>{props.email}</a></label>

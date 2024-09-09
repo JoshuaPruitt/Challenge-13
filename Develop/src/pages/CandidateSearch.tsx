@@ -12,19 +12,22 @@ const clearStorage = () => {
 
 
 const CandidateSearch = () => {
-  const [users, updateUser] = useState<Candidate[] | []>([]);
-
-  // useEffect(() => {
-  //   searchGithub().then((userData) => {
-  //     updateUser(userData);
-  //   });
-  // }, []);
+  const [users, updateUser] = useState<Candidate[]>([]);
 
   useEffect(() => {
-      grabUsersJson().then((userData) => {
-        updateUser(userData);
-      });
-    }, []);
+    searchGithub().then( async (userData) => {
+      
+      const detailedUserPromises = userData.map((user: Candidate) => 
+        searchGithubUser(userData.login).then((userDetails) => ({
+          ...user,
+          ...userDetails
+        }))
+      );
+
+      const detailedUsers = await Promise.all(detailedUserPromises);
+      updateUser(detailedUsers);
+    });
+  }, []);
   
   
   //function for accepting a user. Run when the accept user button is clicked.
@@ -73,14 +76,12 @@ const CandidateSearch = () => {
 
       <main>
         {users.map((user) => (
-          <>
             <UserCard 
             key={user.id}
             acceptUser={acceptUser}
             declineUser={declineUser}
             {...user}
             />
-          </>
         ))}
 
         <button onClick={() => clearStorage()}>
