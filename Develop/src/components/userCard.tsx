@@ -11,12 +11,12 @@ const UserCard = (props: Candidate) => {
                 </div>
 
                 <div className="userInfo">
-                    <h2>{props.login}</h2>
-                    <h2>{props.name}</h2>
-                    <p>{props.location}</p>
-                    <label>Email: <a>{props.email}</a></label>
-                    <p>Company: {props.company}</p>
-                    <p>Bio: {props.bio}</p>
+                    {props.login ? <h2>{props.login}</h2> : ""}
+                    {props.name ? <h2>{props.name}</h2> : ""}
+                    {props.location ? <p>{props.location}</p> : ''}
+                    {props.email ? <label>Email: <a>{props.email}</a></label> : ""}
+                    {props.company ? <p>Company: {props.company}</p> : ''}
+                    {props.bio ? <p>Bio: {props.bio || "No bio Added"}</p> : ''}
                 </div>
 
                 <div className="userButtons">

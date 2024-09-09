@@ -16,9 +16,10 @@ const CandidateSearch = () => {
 
   useEffect(() => {
     searchGithub().then( async (userData) => {
-      
+      console.log("User Data:", userData);
+
       const detailedUserPromises = userData.map((user: Candidate) => 
-        searchGithubUser(userData.login).then((userDetails) => ({
+        searchGithubUser(user.login).then((userDetails) => ({
           ...user,
           ...userDetails
         }))
@@ -57,10 +58,6 @@ const CandidateSearch = () => {
   // the function for declining a user.
   const declineUser = (id: number) => {
     const updatedUsers = users.filter((user: Candidate) => user.id !== id);
-
-    alert(
-      `The selected user has been declined`
-    )
 
     updateUser(updatedUsers);
   }
