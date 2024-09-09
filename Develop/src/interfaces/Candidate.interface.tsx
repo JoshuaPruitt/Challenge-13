@@ -1,14 +1,15 @@
 // TODO: Create an interface for the Candidate objects returned by the API
  export default interface Candidate {
-    id: number;
-    image: any;
-    username: string;
-    name: string;
-    location?: string;
-    email: string;
-    company: string;
-    bio: string;
-    htmlUrl: string;
+    readonly id: number;
+    readonly image: any;
+    readonly username: string;
+    readonly name: string;
+    readonly location?: string;
+    readonly email: string;
+    readonly company: string;
+    readonly bio: string;
+    readonly htmlUrl: string;
+    declined?: boolean;
     acceptUser?: (id: number) => void;
     declineUser?: (id: number) => void;
 };
