@@ -1,158 +1,110 @@
-# Module 13 Challenge: Candidate Search
+# Challenge-13 (Canidate Search)
 
-## Your Task
+## Introduction
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
-TypeScript can enhance the overall development experience with React, leading to more reliable, maintainable, and scalable applications.
+This app lets you view a list of github users. 
 
-Your challenge is to complete a candidate search application that calls the GitHub API and renders data in the browser.
+## Table of Contents 
 
-The application’s API, retrieves data from the GitHub API, has already been created. It's your job to complete the front end using TypeScript, call the application's API, and then deploy the entire application to Render.
+* [Required-Technologies](#required-technologies)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Code Snippet](#code-snippet)
+* [Screenshots](#screenshots)
+* [Features](#features)
+* [Future-Features](#future-features)
+* [License](#license)
+* [Technologies](#technologies-used)
+* [Credits](#credits)
+* [Contact Me](#contact-me)
 
-* For more information on the data returned by the GitHub API, refer to the [GitHub Documentation on REST API Endpoints for Users](https://docs.github.com/en/rest/users/users).
+## Required Technologies
+This project requires node.js and its included node package manager.\
+You can go to <a href="https://nodejs.org/en/download/package-manager">this</a> website to download node.js and npm. Just follow node's included download instructions!
 
-> **important** You'll need to create a [GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) to increase the API rate limit.
+## Installation
+Once the files are downloaded onto your machine open the project folder and run the terminal in the /develop directory.\
+To install the necessary dependencies run the "npm i" command to install the required files. 
 
-## User Story
+Next go to the .env.EXAMPLE file within the develop/enviroment directiory and add a gitHub Fine-grained personal access token. Once thats been added, rename the file to just ".env". Finally, run "npm run dev" to run the Canidate Search site.
 
-```md
-AS AN employer
-I WANT a candidate search application
-SO THAT I can hire the best candidates
-```
+## Usage
+Once started you'll be greeted by the Candidate Search Homepage. If your github token is present you will be greeted by a list of users. Each user card Has a profile picture, a username, and a Accept and Decline button. If a user has given a bio, name, email, location, and company, the corresponding information will also be displayed. Clicking on a users Accept button will send that users information to your local storage and remove that users information from the page. Declining a user will remove their information from the page. 
 
-## Acceptance Criteria
+All accepted users can be viewed on the Saved Candidates page (which can be accessed by clicking the Saved Candidates link at the top of the page). You can view each accepted users provided information. If a user provided no information for a specific tab, the tab will have a message letting the user know that no information was provided. Each accepted user can be declined with the decline button at the end of a users card. Declining a user will remove them from the page and remove their information from local storage.
 
-```md
-GIVEN a candidate search application
-WHEN the candidate search page loads
-THEN the information for one candidate should be displayed, including the candidate's name, username, location, avatar, email, html_url, and company
-WHEN I click the "+" button
-THEN the candidate should be saved to the list of potential candidates and the next candidate's information should be displayed
-WHEN I click the "-" button
-THEN the next candidate's information should be displayed without saving the current candidate
-WHEN there are no candidates available to review
-THEN an appropriate message should be shown indicating no more candidates are available
-WHEN the potential candidates page loads
-THEN the user should see a list of previously saved potential candidates with their name, username, location, avatar, email, html_url, and company
-WHEN the page reloads
-THEN the list of potential candidates should persist and be available for viewing
-WHEN there are no potential candidates
-THEN an appropriate message should be displayed indicating no candidates have been accepted
-WHEN I click the "-" button
-THEN the next candidate's information should be displayed without saving the current candidate
-```
+On the main page there is also a "Clear Local Storage" button located at the bottom of the page. This is for clearing all candidates saved within local storage quickly. This button was mainly used for development purposes but was left in for users to clear storage quickly. 
 
-## Mock-Up
+## Code Snippet
+This code runs on page startup. It is what fills the page with user information. Because the github api does not give all information when asking for a list of users a seperate Api call has to be made by using a users Username to recieve additional information like bio, email, company, location, ect. 
 
-The following images show the web application's appearance and functionality:
+````
+useEffect(() => {
+    //first search through the github data. This returns back an array of users with incomplete information
+    searchGithub().then( async (userData) => {
 
-![The candidate search page displays a candidate's information and allows the user to accept or reject the candidate and view a list of potential candidates.](./Assets/13-01-candidate_search_homepage.png)
+      //Map out the data from the github search so that each user can have informaition added to them
+      const detailedUserPromises = userData.map((user: Candidate) => 
+        //use the login provided by each user to grab additional information 
+        searchGithubUser(user.login).then((userDetails) => ({
+          //spread out the original user data, then spread out the new user data
+          ...user,
+          ...userDetails
+        }))
+      );
 
-![The potential candidates page displays a list of potential candidates and allows the user to reject a candidate.](./Assets/13-02-candidate_search_potential_candidates.png)
+      //Promise all takes all the individual promises from detailedUserPromises and removes all promise information. Returning back just the objects
+      const detailedUsers = await Promise.all(detailedUserPromises);
+      //We then send the parsed information to the updateUser function to have the page be updated
+      updateUser(detailedUsers);
+    });
+  }, []);
+````
 
-## Getting Started
+## Screenshots
 
-* For this app to run, you'll need to create a GitHub Personal Access Token. Follow the instructions on [creating a fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token), with the following caveats:
+This is what the Candidate Search home page looks like.
 
-  * When creating your fine-grained token, leave all the default permissions. We don't need to add any additional privileges to this token, since we're only using it to search public profiles.
+<img src='./Assets/candidateSearch.png' width='680' height='500'>
 
-  * Once your token is generated, add it to a `.env` file in the `environment` folder as `VITE_GITHUB_TOKEN`. The included `.env.EXAMPLE` file can be used as an example.
+This is what the Potential Candidate page looks like. Accepted Users data is stored here.
 
-  * You will NOT be able to view your token after you create it. If you forget to copy it over right away, you'll need to create a new token. 
+<img src='./Assets/potentialCandidates.png' width='680' height='500'>
 
-The starter code provides:
+## Features
+Features include: 
+* The ability to view multiple users
+* A accept and decline button for adding and removing users
+* A Saved Candidiates page for viewing all accepted users
+* A clear storage button for removing all saved data quickly
 
-* The application folder structure and scaffolding
+## Future Features
+Features that may be implemented in the future include: 
+* Filters for only seeing users with complete information
+* A clearer style for User Experience improvement
 
-* Code to retrieve data from the GitHub API
+## License
+Licensed under the MIT license.
 
-  * `./Develop/src/api/API.tsx`
+## Technologies Used
+<ul>
+<li>Node.js (for installing packages as well as building and running code).</li>
+<li>Vite (for running a local server, and development).</li>
+<li>Visual Studio Code (for writing code).</li>
+<li>Mozila Web Docs and W3 Schools (for getting help with JavaScript).</li>
+</ul>
 
-You will need to:
+## Credits
+<ul>
+<li>Joshua Pruitt (me)</li>
+<li>Coding bootcamp staff (for their help with Coding)</li>
+<ul>
 
-* Create a `.env` file with your GitHub API token
-
-* Complete code for the `CandidateSearch` and `SavedCandidates` pages
-
-* Create any necessary components
-
-* Use local storage
-
-Refer to the [GitHub Documentation on Authenticating to the REST API](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#authenticating-with-a-personal-access-token) for information about creating your personal access token.
-
-Refer to the [Full-Stack Blog on deploying to Render](https://coding-boot-camp.github.io/full-stack/render/render-deployment-guide) and the [Render documentation on setting environment variables](https://docs.render.com/configure-environment-variables).
-
-## Bonus
-
-As a bonus, try to add the ability to sort and filter the list of potential candidates.
-
-## Grading Requirements
-
-> **note** If a Challenge assignment submission is marked as “0”, it is considered incomplete and won't count toward your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
-
-This Challenge is graded based on the following criteria:
-
-### Technical Acceptance Criteria: 40%
-
-* Application uses the GitHub API to retrieve user data
-
-* Application uses an interface to type user data
-
-* Application stores potential candidates in localStorage
-
-* Application is deployed to Render
-
-### Deployment: 32%
-
-* Application is deployed at live URL
-
-* Application loads with no errors
-
-* Application GitHub URL has been submitted
-
-* GitHub repository contains application code
-
-### Application Quality: 15%
-
-* Application user experience is intuitive and easy to navigate
-
-* Application user interface style is clean and polished
-
-* Application resembles the mock-up functionality provided in the Challenge instructions
-
-### Repository Quality: 13%
-
-* Repository has a unique name
-
-* Repository follows best practices for file structure and naming conventions
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages
-
-* Repository contains a quality README file with a description, screenshot, and link to the deployed application
-
-### Bonus: +10 Points
-
-Fulfilling the following can add up to 10 points to your grade (note that the highest grade you can achieve is still 100):
-
-* Application allows sorting and filtering of potential candidates
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application
-
-* The URL of the GitHub repository (the repository should have a unique name and include a README describing the project)
-
----
-© 2024 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+## Contact Me
+<ul>
+<li>My email: joshuapruitt6484@gmail.com</li>
+<li><a href=https://github.com/JoshuaPruitt>My GitHub</a></li>
+<li><a href=https://www.linkedin.com/in/joshua-pruitt-1a494a311>My LinkedIn</a></li>
+</ul>       
