@@ -1,5 +1,3 @@
-import testData from '../api/test.json';
-import type Candidate from '../interfaces/Candidate.interface';
 
 const searchGithub = async () => {
   try {
@@ -14,10 +12,6 @@ const searchGithub = async () => {
         },
       }
     );
-
-    // const response = await fetch(
-    //   `https://api.github.com/users?since=${start}`
-    // )
 
     const data = await response.json();
     if (!response.ok) {
@@ -39,9 +33,6 @@ const searchGithubUser = async (username: string) => {
         }, 
       }
     );
-    
-    // const response = await fetch(`https://api.github.com/users/${username}`
-    // );
 
     const data = await response.json();
     if (!response.ok) {
@@ -49,18 +40,8 @@ const searchGithubUser = async (username: string) => {
     }
     return data;
   } catch (err) {
-    // console.log('an error occurred', err);
     return {};
   }
 };
 
-//used to test the upcoming functions
-const grabUsersJson = (): Promise<Candidate[]> => {
-  return new Promise((resolve, _reject) => {
-    setTimeout(() => {
-      resolve(testData);
-    }, 1000);
-  });
-}
-
-export { searchGithub, searchGithubUser, grabUsersJson };
+export { searchGithub, searchGithubUser };

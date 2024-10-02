@@ -1,15 +1,18 @@
 import { useState, useEffect} from 'react';
-import { searchGithub, searchGithubUser, grabUsersJson } from '../api/API';
+import { searchGithub, searchGithubUser} from '../api/API';
 import type Candidate from '../interfaces/Candidate.interface';
 import UserCard from '../components/userCard';
 
 const clearStorage = () => {
   //clear the local storage
   localStorage.clear()
-  // localStorage.setItem('acceptedUsers', JSON.stringify(''))
   console.log("Local Storage Has been Cleared!")
 }
 
+//filter users that do not have certain information. Like 
+// const filterUser = (users: {}) => {
+  
+// }
 
 const CandidateSearch = () => {
   const [users, updateUser] = useState<Candidate[]>([]);
@@ -30,6 +33,10 @@ const CandidateSearch = () => {
 
       //Promise all takes all the individual promises from detailedUserPromises and removes all promise information. Returning back just the objects
       const detailedUsers = await Promise.all(detailedUserPromises);
+
+      //filter all users that do not have certain fields of information. 
+      // const filteredUsers = filterUser(detailedUsers)
+
       //We then send the parsed information to the updateUser function to have the page be updated
       updateUser(detailedUsers);
     });

@@ -2,7 +2,7 @@
  export default interface Candidate {
     readonly id: number;
     readonly login: string;
-    readonly avatar_url: any;
+    readonly avatar_url: string;
     readonly name?: string;
     readonly location?: string;
     readonly email: string;
@@ -12,4 +12,4 @@
     declined?: boolean;
     acceptUser?: (id: number) => void;
     declineUser?: (id: number) => void;
-};
+}
