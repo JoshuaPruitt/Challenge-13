@@ -7,6 +7,8 @@
 
 This app lets you view a list of github users.
 
+Use <a href=https://challenge-13-candidate-search.onrender.com/>this</a> link to go to the deployed site!
+
 ## Table of Contents
 
 - [Required-Technologies](#required-technologies)

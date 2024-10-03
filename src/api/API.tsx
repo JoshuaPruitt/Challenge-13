@@ -40,6 +40,7 @@ const searchGithubUser = async (username: string) => {
     }
     return data;
   } catch (err) {
+    console.error(`User ${username} has their profile set to private. Profile information cannot be grabbed.`)
     return {};
   }
 };
